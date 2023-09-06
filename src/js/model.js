@@ -34,16 +34,15 @@ export const loadSearchResults = async function (query) {
   try {
     state.search.query = query;
     const data = await getJSON(`${API_URL}?search=${query}`);
-    state.search.results = data.data.recipes
-      .map(el => {
-        return {
-          id: el.id,
-          title: el.title,
-          publisher: el.publisher,
-          image: el.image_url,
-        };
-      })
-      .slice(0, 5);
+    state.search.results = data.data.recipes.map(el => {
+      return {
+        id: el.id,
+        title: el.title,
+        publisher: el.publisher,
+        image: el.image_url,
+      };
+    });
+    // .slice(0, 5);
   } catch (err) {
     console.log(err);
     throw err;
