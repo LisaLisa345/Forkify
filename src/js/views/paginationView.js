@@ -20,58 +20,49 @@ class PaginationView extends View {
     const numPages = Math.ceil(
       this._data.results.length / this._data.resultsPerPage
     );
+    const arr = [curPage, numPages];
     // const numPages =
     //page 1, and there are other pages
     if (curPage === 1 && numPages > 1) {
-      return `
-      <button data-goto="${
-        curPage + 1
-      }" class="btn--inline pagination__btn--next">
-      <span>Page ${curPage + 1}</span>
-      <svg class="search__icon">
-        <use href="${icons}#icon-arrow-right"></use>
-      </svg>
-    </button> 
-      `;
+      return this._generateBtns('right', arr);
     }
 
     //Last page
     if (curPage === numPages) {
-      return `
-      <button data-goto="${
-        curPage - 1
-      }" class="btn--inline pagination__btn--prev">
-      <svg class="search__icon">
-        <use href="${icons}#icon-arrow-left"></use>
-      </svg>
-      <span>Page ${curPage - 1} </span>
-    </button>
-      `;
+      return this._generateBtns('left', arr);
     }
     //Other page
     if (curPage !== 1 && this._data.page < numPages) {
-      return `
-      <button data-goto="${
-        curPage + 1
-      }" class="btn--inline pagination__btn--next">
-      <span>Page ${curPage + 1}</span>
+      return this._generateBtns('2btns', arr);
+    }
+    //page 1, and there are no other pages
+    return '';
+  }
+
+  _generateBtns(btn, page) {
+    const rightBtn = `<button data-goto="${
+      page[0] + 1
+    }" class="btn--inline pagination__btn--next">
+      <span>Page ${page[0] + 1}</span>
       <svg class="search__icon">
         <use href="${icons}#icon-arrow-right"></use>
       </svg>
-    </button> 
+    </button> `;
 
-    <button data-goto="${
-      curPage - 1
+    const leftBtn = `<button data-goto="${
+      page[0] - 1
     }" class="btn--inline pagination__btn--prev">
       <svg class="search__icon">
         <use href="${icons}#icon-arrow-left"></use>
       </svg>
-      <span>Page ${curPage - 1} </span>
-    </button>
-      `;
-    }
-    //page 1, and there are no other pages
-    return '';
+      <span>Page ${page[0] - 1} </span>
+    </button>`;
+
+    const numbers = `<button class="btn--inline">${page[0]}</button>`;
+
+    if (btn === 'right') return numbers + rightBtn;
+    if (btn === 'left') return leftBtn + numbers;
+    if (btn === '2btns') return leftBtn + numbers + rightBtn;
   }
 }
 
